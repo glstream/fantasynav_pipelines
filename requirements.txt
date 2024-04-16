@@ -1,0 +1,6 @@
+ipinfo
+selenium
+apache-airflow-providers-postgres==5.4.0
+scipy==1.10.1
+pandas==1.5.3
+beautifulsoup4==4.12.2
