@@ -23,7 +23,7 @@ with DAG(
         "retry_delay": timedelta(minutes=5),
     },
     description="Pulling Data from ESPN API for Player Projections",
-    schedule_interval="@daily",
+    schedule_interval="@weekly",
     start_date=datetime(2022, 6, 8),
     catchup=False,
     tags=["requests", "api", "database"],
@@ -83,7 +83,7 @@ with DAG(
 
         headers = {"x-fantasy-filter": json.dumps(filters)}
 
-        url = f"https://fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leaguedefaults/3?scoringPeriodId=0&view=kona_player_info"
+        url = f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leaguedefaults/3?scoringPeriodId=0&view=kona_player_info"
         req = requests.get(url, headers=headers)
         res = req.json()
         print('STATUS_CODE', req.status_code)
