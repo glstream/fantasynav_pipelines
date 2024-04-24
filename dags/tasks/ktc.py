@@ -23,7 +23,7 @@ def ktc_web_scraper():
     def parse_players_script(response, rank_type):
         soup = BeautifulSoup(response.text, "html.parser")
         scripts = soup.find_all("script")
-        script_var_array = scripts[16]  # Assuming the target script is at index 16
+        script_var_array = scripts[6]  # Assuming the target script is at index 16
         players_script = script_var_array.contents[0]
         START_REGEX = "var playersArray ="
         start_substr_num = players_script.find(START_REGEX) + len(START_REGEX) + 1
