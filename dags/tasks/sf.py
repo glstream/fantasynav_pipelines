@@ -341,8 +341,8 @@ def fix_future_draft_picks():
     cursor.execute(sql_query_to_fetch_data)
     fetched_data = cursor.fetchall()
 
-    data_2025 = [(pick[0].replace('2024', '2025'),(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
-    data_2025 = [(pick[0].replace('2024', '2025'),(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
+    data_2025 = [(pick[0].replace('2024', '2025'),pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
+    data_2025 = [(pick[0].replace('2024', '2025'),pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
 
     delete_sql = """DELETE FROM dynastr.sf_player_ranks 
         WHERE (player_full_name LIKE '%2025%' OR player_full_name LIKE '%2026%')
