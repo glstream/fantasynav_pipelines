@@ -12,7 +12,7 @@ import uuid
 def insert_player_data(row, cursor):
     insert_query = '''
     INSERT INTO dynastr.sf_player_ranks (
-        player_full_name, ktc_player_id, team, _position, ktc_sf_value,
+        player_full_name, display_player_full_name, ktc_player_id, team, _position, ktc_sf_value,
         ktc_sf_rank, ktc_one_qb_value, ktc_one_qb_rank, fc_sf_value,
         fc_sf_rank, fc_one_qb_value, fc_one_qb_rank, dp_sf_value,
         dp_sf_rank, dp_one_qb_value, dp_one_qb_rank,
@@ -23,10 +23,11 @@ def insert_player_data(row, cursor):
         superflex_sf_value, superflex_one_qb_value, superflex_sf_rank,
         superflex_one_qb_rank, superflex_sf_pos_rank, superflex_one_qb_pos_rank, insert_date, rank_type
 
-    ) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'dynasty')
+    ) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'dynasty')
 
     ON CONFLICT (ktc_player_id, rank_type) DO UPDATE SET
     player_full_name = EXCLUDED.player_full_name,
+    display_player_full_name = EXCLUDED.display_player_full_name,
     team = EXCLUDED.team,
     _position = EXCLUDED._position,
     ktc_sf_value = EXCLUDED.ktc_sf_value,
@@ -139,6 +140,7 @@ and (ktc.player_full_name like '%2024 Round%' or ktc.position = 'RDP')
 
 select 
 player_full_name
+, player_full_name as display_player_full_name
 , player_id
 , team
 , _position
@@ -267,8 +269,8 @@ from asset_values"""
     cursor.execute(sql_query_to_fetch_data)
     fetched_data = cursor.fetchall()
 
-    data_2025 = [(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
-    data_2026 = [(pick[0].replace('2024', '2026'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.80), round(pick[6] * 0.80)) for pick in fetched_data]
+    data_2025 = [(pick[0].replace('2024', '2025'), pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
+    data_2026 = [(pick[0].replace('2024', '2026'), pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.80), round(pick[6] * 0.80)) for pick in fetched_data]
 
     delete_sql = """DELETE FROM dynastr.sf_player_ranks 
         WHERE (player_full_name LIKE '%2025%' OR player_full_name LIKE '%2026%')
@@ -288,8 +290,8 @@ from asset_values"""
     # SQL statement for inserting data
     insert_future_draft_sql = """
     INSERT INTO dynastr.sf_player_ranks 
-    (player_full_name, ktc_player_id, team, _position, rank_type,superflex_one_qb_value, superflex_sf_value ) 
-    VALUES (%s, %s,%s, %s,%s, %s,%s)
+    (player_full_name, display_player_full_name, ktc_player_id, team, _position, rank_type,superflex_one_qb_value, superflex_sf_value ) 
+    VALUES (%s, %s, %s,%s, %s,%s, %s,%s)
     """
 
         # Execute the INSERT statement for each row
@@ -339,8 +341,8 @@ def fix_future_draft_picks():
     cursor.execute(sql_query_to_fetch_data)
     fetched_data = cursor.fetchall()
 
-    data_2025 = [(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
-    data_2025 = [(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
+    data_2025 = [(pick[0].replace('2024', '2025'),(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
+    data_2025 = [(pick[0].replace('2024', '2025'),(pick[0].replace('2024', '2025'), str(uuid.uuid4()),*pick[2:5], round(pick[5] * 0.90), round(pick[6] * 0.90)) for pick in fetched_data]
 
     delete_sql = """DELETE FROM dynastr.sf_player_ranks 
         WHERE (player_full_name LIKE '%2025%' OR player_full_name LIKE '%2026%')
@@ -361,8 +363,8 @@ def fix_future_draft_picks():
     # SQL statement for inserting data
     insert_future_draft_sql = """
     INSERT INTO dynastr.sf_player_ranks 
-    (player_full_name, ktc_player_id, team, _position, rank_type,superflex_one_qb_value, superflex_sf_value ) 
-    VALUES (%s, %s,%s, %s,%s, %s,%s)
+    (player_full_name, display_player_full_name ktc_player_id, team, _position, rank_type,superflex_one_qb_value, superflex_sf_value ) 
+    VALUES (%s, %s, %s,%s, %s,%s, %s,%s)
     """
 
         # Execute the INSERT statement for each row
