@@ -258,7 +258,7 @@ from asset_values"""
     from dynastr.sf_player_ranks 
     where 1=1
     and (player_full_name like '%2024%')
-    and( player_full_name like '%Mid%' or player_full_name like '%Late%' or player_full_name like '%early%')
+    and( player_full_name like '%Mid%' or player_full_name like '%Late%' or player_full_name like '%Early%')
     and rank_type = 'dynasty'
     order by superflex_sf_value desc
     """
@@ -330,7 +330,7 @@ def fix_future_draft_picks():
     from dynastr.sf_player_ranks 
     where 1=1
     and (player_full_name like '%2024%')
-    and( player_full_name like '%Mid%' or player_full_name like '%Late%' or player_full_name like '%early%')
+    and( player_full_name like '%Mid%' or player_full_name like '%Late%' or player_full_name like '%Early%')
     and rank_type = 'dynasty'
     order by superflex_sf_value desc
     """
